@@ -1,0 +1,21 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "app:dev": "cd server && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Krasav4ik66/blog.git"
+  },
+  "author": "Illya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Krasav4ik66/blog/issues"
+  },
+  "homepage": "https://github.com/Krasav4ik66/blog#readme",
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
+}
