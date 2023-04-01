@@ -1,67 +1,63 @@
 const Task = require("../models/Task");
 
-exports.getAll = async (req, res) =>{
-    try {
+exports.getAll = async (req, res) => {
+  try {
+    const tasks = await Task.find();
 
-        const tasks = await Task.find();
+    return res.status(200).json({
+      tasks,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Something went wrong. Please,try again.",
+    });
+  }
+};
 
-        return res.status(200).json({
-            tasks
-        });
+exports.create = async (req, res) => {
+  try {
+    const { name, endDate, startDate } = req.body;
+    const userID = req.headers.id;
 
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-            message: 'Something went wrong. Please,try again.'
-        });
+    const newTask = new Task({ name, endDate, startDate, userID });
+    newTask.save();
+
+    const tasks = await Task.find();
+
+    return res.status(201).json({
+      tasks,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      message: "Something went wrong. Please,try again.",
+    });
+  }
+};
+
+exports.delete = async (req, res) => {
+  try {
+    const taskId = req.params.id;
+
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({
+        message: "Task not found.",
+      });
     }
-}
 
-exports.create = async (req, res) =>{
-    try {
-        const {name, endDate, startDate} = req.body;
+    await Task.findOneAndDelete({ _id: taskId });
 
-        const newTask = new Task({name, endDate, startDate});
-        newTask.save();
+    const tasks = await Task.find();
 
-        const tasks = await Task.find();
-
-        return res.status(201).json({
-            tasks
-        });
-
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-            message: 'Something went wrong. Please,try again.'
-        });
-    }
-}
-
-exports.delete = async (req, res) =>{
-    try {
-        const taskId = req.params.id;
-
-        const task = await Task.findById(taskId);
-        
-        if (!task) {
-            return res.status(404).json({
-                message: "Task not found."
-            })
-        }
-
-        await Task.findOneAndDelete({_id: taskId})
-
-        const tasks = await Task.find();
-
-        return res.status(201).json({
-            tasks
-        });
-
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-            message: 'Something went wrong. Please,try again.'
-        });
-    }
-}
+    return res.status(201).json({
+      tasks,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      message: "Something went wrong. Please,try again.",
+    });
+  }
+};

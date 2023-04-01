@@ -1,10 +1,8 @@
-const {sign} = require("jsonwebtoken");
-const dotenv = require('dotenv');
+const { sign } = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
-const User = require('../models/User');
-
-dotenv.config ();
+dotenv.config();
 
 module.exports.signPayload = (payload, time) => {
-    return sign(payload, process.env.SECRET_KEY, { expiresIn: time });
-}
+  return sign(payload, process.env.SECRET_KEY, { expiresIn: time });
+};
